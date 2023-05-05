@@ -1,0 +1,33 @@
+version: "3"
+services:
+  node:
+    container_name: queque_back
+    build:
+      context: ./Docker/node
+    ports:
+      - 3030:3030
+      - 4000:4000
+    volumes:
+      - ./src:/home/node/queque_board_api/src
+    environment:
+      - NODE_ENV_DEVELOPMENT=development
+      - NODE_ENV_PRODUCTION=production
+    stdin_open: true
+    tty: true
+
+  postgres:
+    container_name: queque_postgres
+    build: ./Docker/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - queque-db-volume:/var/lib/postgresql/data
+    environment:
+      TZ: "Asia/Tokyo"
+      POSTGRES_DB: queque_db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+    hostname: postgres
+    restart: always
+volumes:
+  queque-db-volume:
