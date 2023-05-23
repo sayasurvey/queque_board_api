@@ -7,6 +7,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22",
     "prisma": "^4.14.1",
     "watchman": "^1.0.0"
   },
@@ -17,6 +18,8 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "start": "ts-node app.ts"
+    "start": "ts-node server.ts",
+    "watch": "nodemon server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
