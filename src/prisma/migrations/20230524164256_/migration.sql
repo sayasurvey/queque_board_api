@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Board" ALTER COLUMN "body" DROP NOT NULL;
