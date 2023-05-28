@@ -25,6 +25,14 @@ export const createBoard = async (
   return board;
 };
 
+export const detailPost = async (id: number): Promise<Board | null> => {
+  const board = await prismaContext.board.findUnique({
+    where: { id },
+  });
+
+  return board;
+};
+
 export const updateBoard = (
   id: number,
   title: string,

@@ -6,7 +6,8 @@ const boardContext = new BoardController();
 
 router.use("/boards", boardContext.getBoards);
 router.use("/board", boardContext.postBoard);
-router.use("/board/:id", boardContext.postBoard);
+router.use("board/:id", boardContext.showBoard);
+router.use("/board/:id", boardContext.putBoard);
 router.use("/board/:id", boardContext.deleteBoard);
 
 module.exports = router;
