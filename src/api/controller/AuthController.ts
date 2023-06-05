@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 const {
-  usersGet,
   fetchUserPassword,
   // alreadyUserCheck,
   registerUser,
@@ -8,13 +7,6 @@ const {
 const { hashingPassword, jwtSign, compareCheck } = require("../service/auth");
 
 export class AuthController {
-  async usersGet(_req: Request, res: Response) {
-    const allUsers = await usersGet();
-    return res.status(200).send({
-      message: allUsers,
-    });
-  }
-
   async register(req: Request, res: Response): Promise<void> {
     try {
       const hashedPassword = await hashingPassword(req.body.password);

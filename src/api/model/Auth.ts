@@ -1,14 +1,7 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
-// import { typeRegisterReq } from "../../types/auth/index";
 
-// users
 
-export const usersGet = async () => {
-  const allUsers = await prismaContext.user.findMany();
-
-  return allUsers;
-};
 
 // auth/register
 

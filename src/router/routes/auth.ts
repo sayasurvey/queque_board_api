@@ -11,7 +11,6 @@ const {
 
 const authContext = new AuthController();
 
-router.get("/users", authContext.usersGet);
 router.post("/register", authRegisterRule, validateError, authContext.register);
 router.post("/login", authLoginRule, validateError, authContext.login);
 
