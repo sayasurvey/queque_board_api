@@ -1,8 +1,6 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 
-
-
 // auth/register
 
 export const registerUser = async (

@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 const { authenticateToken } = require("../../api/handler/middleware/auth");
-// import { authen }
 const { AuthController } = require("../../api/controller/AuthController");
 const { validateError } = require("../../api/handler/rules/validateError");
 const {
@@ -11,8 +10,8 @@ const {
 
 const authContext = new AuthController();
 
-router.post("/register", authRegisterRule, validateError, authContext.register);
-router.post("/login", authLoginRule, validateError, authContext.login);
+router.post("/signup", authRegisterRule, validateError, authContext.register);
+router.post("/signin", authLoginRule, validateError, authContext.login);
 
 router.get("/test", authenticateToken, (_req: Request, res: Response) => {
   return res.status(200).send({

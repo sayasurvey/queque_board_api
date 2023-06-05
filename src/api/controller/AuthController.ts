@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 const {
   fetchUserPassword,
-  // alreadyUserCheck,
   registerUser,
 } = require("../model/Auth");
 const { hashingPassword, jwtSign, compareCheck } = require("../service/auth");

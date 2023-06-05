@@ -5,14 +5,14 @@ dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET_KEY || "";
 
-// auth/register
+// auth/signup
 
 export const hashingPassword = async (password: string): Promise<string> => {
   const hashed = await bcrypt.hash(password, 10);
   return hashed;
 };
 
-// auth/login
+// auth/signin
 
 export const compareCheck = async (
   password: string,

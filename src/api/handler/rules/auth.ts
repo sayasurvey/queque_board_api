@@ -32,8 +32,7 @@ export const authRegisterRule = [
     .isLength({ min: 5 })
     .withMessage("password mast be at least 5 characters")
     .isLength({ max: 50 })
-    .withMessage("name mast be at largest 50 characters"),
-  check("role").not().isEmpty().withMessage("role is required"),
+    .withMessage("name mast be at largest 50 characters")
 ];
 
 export const authLoginRule = [
