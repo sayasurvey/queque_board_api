@@ -13,10 +13,4 @@ const authContext = new AuthController();
 router.post("/signup", authRegisterRule, validateError, authContext.register);
 router.post("/signin", authLoginRule, validateError, authContext.login);
 
-router.get("/test", authenticateToken, (_req: Request, res: Response) => {
-  return res.status(200).send({
-    message: "authenticateToken success",
-  });
-});
-
 module.exports = router;
