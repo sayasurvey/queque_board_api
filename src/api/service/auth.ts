@@ -24,7 +24,6 @@ export const compareCheck = async (
 
 export const jwtSign = async (email: string): Promise<string> => {
   const payload = { email: email };
-  console.log({ payload });
   const options = {
     expiresIn: "24h",
   };
