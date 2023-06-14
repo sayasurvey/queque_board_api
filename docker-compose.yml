@@ -5,7 +5,7 @@ services:
     build:
       context: ./Docker/node
     ports:
-      - 3000:3000
+      - 3001:3001
       - 4000:4000
     volumes:
       - ./src:/home/node/queque_board_api/src
