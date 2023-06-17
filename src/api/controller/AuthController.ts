@@ -50,7 +50,6 @@ export class AuthController {
 
   async logout(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req);
       res.clearCookie("jwtToken", {
         httpOnly: true,
         expires: new Date(Date.now() + 86400000), // 1日後の有効期限
