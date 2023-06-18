@@ -9,7 +9,6 @@ export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
       const { name, email } = req.body;
-
       const hashedPassword = await hashingPassword(req.body.password);
       const user = await registerUser(name, email,  hashedPassword);
 
