@@ -9,6 +9,7 @@ export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
       const { name, email } = req.body;
+
       const hashedPassword = await hashingPassword(req.body.password);
       const user = await registerUser(name, email,  hashedPassword);
 
@@ -40,6 +41,7 @@ export class AuthController {
 
       if (!token) throw new Error("not create token");
 
+      res.cookie('jwtToken', token, { httpOnly: true });
       res.status(201).json({ token });
     } catch (error: any) {
       res.json({
