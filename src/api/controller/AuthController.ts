@@ -8,9 +8,9 @@ const { hashingPassword, jwtSign, compareCheck } = require("../service/auth");
 export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
+      const { name, email } = req.body;
       const hashedPassword = await hashingPassword(req.body.password);
-
-      const user = await registerUser(req.body, hashedPassword);
+      const user = await registerUser(name, email,  hashedPassword);
 
       if (!user) throw new Error("not register user");
 

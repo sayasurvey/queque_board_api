@@ -4,11 +4,11 @@ import { prismaContext } from "../../lib/prismaContext";
 // auth/register
 
 export const registerUser = async (
-  body: User,
+  name: string,
+  email: string,
   hashedPassword: string
 ): Promise<User> => {
-  let { name, email, password } = body;
-  password = hashedPassword;
+  const password = hashedPassword;
   const user = await prismaContext.user.create({
     data: {
       name,
