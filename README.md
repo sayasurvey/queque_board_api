@@ -49,10 +49,7 @@ router.method("/endpoint", authenticateToken, validateRule, validateError, class
 - queque_apiブランチのターミナルで以下のコマンドを実行
 ```
 docker compose up -d --build
-docker network create -d bridge queque-network
-docker network connect queque-network queque_back
-docker network connect queque-network queque_postgres
-docker exec -it queque_back sh
+docker compose exec node sh
 yarn
 yarn watch
 ```
