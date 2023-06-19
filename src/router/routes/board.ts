@@ -4,10 +4,10 @@ const { BoardController } = require("../../api/controller/BoardController");
 
 const boardContext = new BoardController();
 
-router.use("/boards", boardContext.getBoards);
-router.use("/board", boardContext.postBoard);
-router.use("board/:id", boardContext.showBoard);
-router.use("/board/:id", boardContext.putBoard);
-router.use("/board/:id", boardContext.deleteBoard);
+router.get("/boards", boardContext.getBoards);
+router.post("/board", boardContext.postBoard);
+router.get("board/:id", boardContext.showBoard);
+router.put("/board/:id", boardContext.putBoard);
+router.delete("/board/:id", boardContext.deleteBoard);
 
 module.exports = router;
