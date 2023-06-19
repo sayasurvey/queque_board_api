@@ -1,16 +1,13 @@
 import { Request, Response } from "express";
-const {
-  fetchUserPassword,
-  registerUser,
-} = require("../model/Auth");
+const { fetchUserPassword, registerUser } = require("../model/Auth");
 const { hashingPassword, jwtSign, compareCheck } = require("../service/auth");
 
 export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
-      const { name, email } = req.body;
-      const hashedPassword = await hashingPassword(req.body.password);
-      const user = await registerUser(name, email,  hashedPassword);
+      const { name, email, password } = req.body;
+      const hashedPassword = await hashingPassword(password);
+      const user = await registerUser(name, email, hashedPassword);
 
       if (!user) throw new Error("not register user");
 
@@ -40,7 +37,7 @@ export class AuthController {
 
       if (!token) throw new Error("not create token");
 
-      res.cookie('jwtToken', token, { httpOnly: true });
+      res.cookie("jwtToken", token, { httpOnly: true });
       res.status(201).json({ token });
     } catch (error: any) {
       res.json({
@@ -55,7 +52,7 @@ export class AuthController {
         httpOnly: true,
         expires: new Date(Date.now() + 86400000), // 1日後の有効期限
       });
-  
+
       res.status(200).json({ message: "Logout success" });
     } catch (error) {
       console.log(error);
