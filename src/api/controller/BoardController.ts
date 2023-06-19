@@ -36,7 +36,7 @@ export class BoardController {
 
   async showBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
+      const id = parseInt(req.params.id);
       const board = await getBoard(id);
 
       if (!board) {
