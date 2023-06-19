@@ -9,14 +9,14 @@ export const allBoard = async () => {
 
 export const createBoard = async (
   title: string,
-  body: string,
+  content: string,
   boardImage: string,
   userId: number
 ): Promise<Board> => {
   const board = await prismaContext.board.create({
     data: {
       title,
-      body,
+      content,
       boardImage,
       userId,
     },
@@ -25,7 +25,7 @@ export const createBoard = async (
   return board;
 };
 
-export const detailPost = async (id: number): Promise<Board | null> => {
+export const getBoard = async (id: number): Promise<Board | null> => {
   const board = await prismaContext.board.findUnique({
     where: { id },
   });
@@ -36,12 +36,12 @@ export const detailPost = async (id: number): Promise<Board | null> => {
 export const updateBoard = (
   id: number,
   title: string,
-  body: string,
+  content: string,
   boardImage: string
 ): Promise<Board> => {
   const board = prismaContext.board.update({
     where: { id },
-    data: { title, body, boardImage },
+    data: { title, content, boardImage },
   });
 
   return board;

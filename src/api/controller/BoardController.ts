@@ -18,8 +18,8 @@ export class BoardController {
 
   async postBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { title, body, boardImage, userId } = req.body;
-      const board = await createBoard(title, body, boardImage, userId);
+      const { title, content, boardImage, userId } = req.body;
+      const board = await createBoard(title, content, boardImage, userId);
       if (!board) {
         throw new Error("this board does not exist");
       }
@@ -56,8 +56,8 @@ export class BoardController {
 
   async putBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id, title, body, boardImage } = req.body;
-      const board = await updateBoard(id, title, body, boardImage);
+      const { id, title, content, boardImage } = req.body;
+      const board = await updateBoard(id, title, content, boardImage);
       if (!board) {
         throw new Error("this board does not exist");
       }

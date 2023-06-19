@@ -24,7 +24,7 @@ model User {
 model Board {
   id          Int     @id @default(autoincrement())
   title       String
-  body        String?
+  content      String?
   boardImage  String?
   user        User    @relation(fields: [userId], references: [id])
   userId      Int
