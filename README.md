@@ -39,3 +39,17 @@ router.method("/endpoint", authenticateToken, validateRule, validateError, class
   - データアクセスが存在するロジックはmodel定義で呼び出す → prismaContext使用部分
   - データアクセスが存在しないロジックはservice定義で呼び出す
 
+## ポート切り替え時の対応
+
+- ポート番号3001に変更されたmainブランチをpull
+
+- .envファイルを書き換え
+　内容はメールで送信
+
+- queque_apiブランチのターミナルで以下のコマンドを実行
+```
+docker compose up -d --build
+docker compose exec node sh
+yarn
+yarn watch
+```
