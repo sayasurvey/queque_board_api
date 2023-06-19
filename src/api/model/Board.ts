@@ -2,7 +2,7 @@ import { Board } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 import { privateDecrypt } from "crypto";
 
-export const allBoard = async () => {
+export const getBoards = async () => {
   const board = await prismaContext.board.findMany();
   return board;
 };

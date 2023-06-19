@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {
-  allBoard,
+  getBoards,
   createBoard,
   getBoard,
   updateBoard,
@@ -9,7 +9,7 @@ import {
 
 export class BoardController {
   async allBoard(_req: Request, res: Response): Promise<void> {
-    const boards = await allBoard();
+    const boards = await getBoards();
     res.status(200).json({
       message: "board get all success",
       boards,
@@ -56,7 +56,8 @@ export class BoardController {
 
   async putBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id, title, content, boardImage } = req.body;
+      const id = parseInt(req.params.id);
+      const { title, content, boardImage } = req.body;
       const board = await updateBoard(id, title, content, boardImage);
       if (!board) {
         throw new Error("this board does not exist");
@@ -74,7 +75,8 @@ export class BoardController {
 
   async deleteBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
+      const id = parseInt(req.params.id);
+      console.log({ id });
       const board = await destroyBoard(id);
       if (!board) {
         throw new Error("this board does not exist");
