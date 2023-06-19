@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
-import {
-  updateUser,
-  showUser,
-  destroyUser,
-} from "../model/User";
+import { getUsers, updateUser, showUser, destroyUser } from "../model/User";
 
 export class UserController {
+  async allUser(_req: Request, res: Response): Promise<void> {
+    const users = await getUsers();
+    res.status(200).json({
+      users,
+    });
+  }
+
   async showUser(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.body;

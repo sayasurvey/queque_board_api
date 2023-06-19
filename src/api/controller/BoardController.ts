@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import {
   allBoard,
   createBoard,
-  detailPost,
+  getBoard,
   updateBoard,
   destroyBoard,
 } from "../model/Board";
 
 export class BoardController {
-  async getBoards(_req: Request, res: Response): Promise<void> {
+  async allBoard(_req: Request, res: Response): Promise<void> {
     const boards = await allBoard();
     res.status(200).json({
       message: "board get all success",
@@ -37,7 +37,7 @@ export class BoardController {
   async showBoard(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.body;
-      const board = await detailPost(id);
+      const board = await getBoard(id);
 
       if (!board) {
         throw new Error("this board does not exist");

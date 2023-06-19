@@ -1,16 +1,19 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 
-export const showUser = async (
-  id: number
-): Promise<User | null> => {
+export const getUsers = async () => {
+  const users = await prismaContext.user.findMany();
+  return users;
+};
+
+export const showUser = async (id: number): Promise<User | null> => {
   const user = await prismaContext.user.findUnique({
     where: {
-      id
+      id,
     },
     include: {
-      boards: true
-    }
+      boards: true,
+    },
   });
 
   return user;
