@@ -76,7 +76,6 @@ export class BoardController {
   async deleteBoard(req: Request, res: Response): Promise<void> {
     try {
       const id = parseInt(req.params.id);
-      console.log({ id });
       const board = await destroyBoard(id);
       if (!board) {
         throw new Error("this board does not exist");
