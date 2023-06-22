@@ -13,44 +13,72 @@ export const createBoard = async (
   boardImage: string,
   userId: number
 ): Promise<Board> => {
-  const board = await prismaContext.board.create({
-    data: {
-      title,
-      content,
-      boardImage,
-      userId,
-    },
-  });
+  const board = await prismaContext.board
+    .create({
+      data: {
+        title,
+        content,
+        boardImage,
+        userId,
+      },
+    })
+    .catch(() => {
+      throw new Error("not post board");
+    });
+
+  return board;
+};
+export const existCheckId = async (id: number): Promise<any> => {
+  const checkId = await prismaContext.board
+    .findUnique({
+      where: { id: id },
+      select: { id: true },
+    })
+    .catch(() => {
+      "this board does not exist";
+    });
+
+  return checkId?.id;
+};
+
+export const getBoard = async (existId: number): Promise<Board | null> => {
+  const board = await prismaContext.board
+    .findUnique({
+      where: { id: existId },
+    })
+    .catch(() => {
+      throw new Error("not get board");
+    });
 
   return board;
 };
 
-export const getBoard = async (id: number): Promise<Board | null> => {
-  const board = await prismaContext.board.findUnique({
-    where: { id },
-  });
-
-  return board;
-};
-
-export const updateBoard = (
-  id: number,
+export const updateBoard = async (
+  existId: number,
   title: string,
   content: string,
   boardImage: string
 ): Promise<Board> => {
-  const board = prismaContext.board.update({
-    where: { id },
-    data: { title, content, boardImage },
-  });
+  const board = await prismaContext.board
+    .update({
+      where: { id: existId },
+      data: { title, content, boardImage },
+    })
+    .catch(() => {
+      throw new Error("not update board");
+    });
 
   return board;
 };
 
-export const destroyBoard = (id: number): Promise<Board> => {
-  const board = prismaContext.board.delete({
-    where: { id },
-  });
+export const destroyBoard = (existId: number): Promise<Board | void> => {
+  const board = prismaContext.board
+    .delete({
+      where: { id: existId },
+    })
+    .catch(() => {
+      throw new Error("not delete board");
+    });
 
   return board;
 };
