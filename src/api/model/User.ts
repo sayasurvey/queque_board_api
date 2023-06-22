@@ -6,7 +6,7 @@ export const getUsers = async () => {
   return users;
 };
 
-export const showUser = async (id: number): Promise<User | null> => {
+export const getUser = async (id: number): Promise<User | null> => {
   const user = await prismaContext.user.findUnique({
     where: {
       id,

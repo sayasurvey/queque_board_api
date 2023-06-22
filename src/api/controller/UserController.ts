@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getUsers, updateUser, showUser, destroyUser } from "../model/User";
+import { getUsers, updateUser, getUser, destroyUser } from "../model/User";
 
 export class UserController {
   async allUser(_req: Request, res: Response): Promise<void> {
@@ -12,7 +12,7 @@ export class UserController {
   async showUser(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.body;
-      const user = await showUser(id);
+      const user = await getUser(id);
       if (!user) {
         throw new Error("this user does not exist");
       }
