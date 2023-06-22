@@ -10,9 +10,7 @@ export const boardCreateRule = [
   check("content")
     .isLength({ max: 255 })
     .withMessage("content mast be at largest 255 characters"),
-  check("boardImage")
-    .isLength({ max: 255 })
-    .withMessage("boardImage mast be at largest 255 characters"),
+  check("boardImage"),
   // todo: 正規表現バリデーションの実装
 ];
 
@@ -26,8 +24,6 @@ export const boardUpdateRule = [
   check("content")
     .isLength({ max: 255 })
     .withMessage("content mast be at largest 255 characters"),
-  check("boardImage")
-    .isLength({ max: 255 })
-    .withMessage("boardImage mast be at largest 255 characters"),
+  check("boardImage"),
   // todo: 正規表現バリデーションの実装
 ];
