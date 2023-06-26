@@ -28,17 +28,17 @@ export const createBoard = async (
 
   return board;
 };
-export const existCheckId = async (id: number): Promise<any> => {
-  const checkId = await prismaContext.board
-    .findUnique({
-      where: { id: id },
-      select: { id: true },
-    })
-    .catch(() => {
-      "this board does not exist";
-    });
+export const existCheckId = async (id: number): Promise<number> => {
+  const checkId = await prismaContext.board.findUnique({
+    where: { id: id },
+    select: { id: true },
+  });
 
-  return checkId?.id;
+  if (checkId === null) {
+    throw new Error("this board does not exist");
+  }
+
+  return checkId.id;
 };
 
 export const getBoard = async (existId: number): Promise<Board | null> => {
