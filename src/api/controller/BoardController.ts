@@ -41,7 +41,7 @@ export class BoardController {
       const board = await getBoard(existId);
 
       res.status(201).json({
-        message: "board update success",
+        message: "board sho get success",
         board,
       });
     } catch (error: any) {
