@@ -15,19 +15,36 @@ services:
     stdin_open: true
     tty: true
 
-  postgres:
+  dev_db:
     container_name: queque_postgres
     build: ./Docker/postgres
     ports:
       - "5432:5432"
     volumes:
-      - queque-db-volume:/var/lib/postgresql/data
+      - queque_dev_db_volume:/var/lib/postgresql/data
     environment:
       TZ: "Asia/Tokyo"
-      POSTGRES_DB: queque_db
+      POSTGRES_DB: queque_dev_db
       POSTGRES_PASSWORD: password
       POSTGRES_USER: user
     hostname: postgres
     restart: always
+
+  test_db:
+    container_name: queque_test_postgres
+    build: ./Docker/postgres
+    ports:
+      - "5431:5431"
+    volumes:
+      - queque_test_db_volume:/var/lib/postgresql/data
+    environment:
+      TZ: "Asia/Tokyo"
+      POSTGRES_DB: queque_test_db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+    hostname: postgresTest
+    restart: always
+
 volumes:
-  queque-db-volume:
+  queque_dev_db_volume:
+  queque_test_db_volume:
