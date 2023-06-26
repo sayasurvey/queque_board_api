@@ -37,11 +37,6 @@ export class BoardController {
     try {
       const id = parseInt(req.params.id);
       const existId = await existCheckId(id);
-      console.log({ existId });
-
-      // if (existId === undefined) {
-      //   throw new Error("tete");
-      // }
 
       const board = await getBoard(existId);
 
