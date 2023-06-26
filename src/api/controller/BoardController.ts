@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import {
-  allBoard,
+  getBoards,
   createBoard,
-  detailPost,
+  existCheckId,
+  getBoard,
   updateBoard,
   destroyBoard,
 } from "../model/Board";
 
 export class BoardController {
-  async getBoards(_req: Request, res: Response): Promise<void> {
-    const boards = await allBoard();
+  async allBoard(_req: Request, res: Response): Promise<void> {
+    const boards = await getBoards();
     res.status(200).json({
       message: "board get all success",
       boards,
@@ -18,11 +19,9 @@ export class BoardController {
 
   async postBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { title, body, boardImage, userId } = req.body;
-      const board = await createBoard(title, body, boardImage, userId);
-      if (!board) {
-        throw new Error("this board does not exist");
-      }
+      const { title, content, boardImage, userId } = req.body;
+      const board = await createBoard(title, content, boardImage, userId);
+
       res.status(201).json({
         message: "board create success",
         board,
@@ -36,15 +35,13 @@ export class BoardController {
 
   async showBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
-      const board = await detailPost(id);
+      const id = parseInt(req.params.id);
+      const existId = await existCheckId(id);
 
-      if (!board) {
-        throw new Error("this board does not exist");
-      }
+      const board = await getBoard(existId);
 
       res.status(201).json({
-        message: "board update success",
+        message: "board sho get success",
         board,
       });
     } catch (error: any) {
@@ -56,11 +53,11 @@ export class BoardController {
 
   async putBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id, title, body, boardImage } = req.body;
-      const board = await updateBoard(id, title, body, boardImage);
-      if (!board) {
-        throw new Error("this board does not exist");
-      }
+      const id = parseInt(req.params.id);
+      const { title, content, boardImage } = req.body;
+      const existId = await existCheckId(id);
+      const board = await updateBoard(existId, title, content, boardImage);
+
       res.status(201).json({
         message: "board update success",
         board,
@@ -74,11 +71,10 @@ export class BoardController {
 
   async deleteBoard(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
-      const board = await destroyBoard(id);
-      if (!board) {
-        throw new Error("this board does not exist");
-      }
+      const id = parseInt(req.params.id);
+      const existId = await existCheckId(id);
+      const _board = await destroyBoard(existId);
+
       res.status(201).json({
         message: "board delete success",
       });

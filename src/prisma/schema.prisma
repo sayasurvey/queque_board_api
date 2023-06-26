@@ -24,7 +24,7 @@ model User {
 model Board {
   id          Int     @id @default(autoincrement())
   title       String
-  body        String?
+  content     String?
   boardImage  String?
   user        User    @relation(fields: [userId], references: [id])
   userId      Int
@@ -42,7 +42,7 @@ model Bookmark {
 
 model Comment {
   id          Int     @id @default(autoincrement())
-  body        String
+  content     String
   board       Board   @relation(fields: [boardId], references: [id])
   user        User    @relation(fields: [userId], references: [id])
   boardId     Int
