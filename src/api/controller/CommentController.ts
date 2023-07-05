@@ -16,24 +16,7 @@ export class CommentController {
       const Comment = await createComment(content, userId, boardId);
 
       res.status(201).json({
-        message: "Comment create success",
-        Comment,
-      });
-    } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
-    }
-  }
-
-  async showComment(req: Request, res: Response): Promise<void> {
-    try {
-      const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
-      const Comment = await getComment(existId);
-
-      res.status(201).json({
-        message: "Comment sho get success",
+        message: "コメントを投稿しました",
         Comment,
       });
     } catch (error: any) {
@@ -52,7 +35,7 @@ export class CommentController {
       const Comment = await updateComment(existId, content, userId, boardId);
 
       res.status(201).json({
-        message: "Comment update success",
+        message: "コメントを更新しました",
         Comment,
       });
     } catch (error: any) {
@@ -69,7 +52,7 @@ export class CommentController {
       const _comment = await destroyComment(existId);
 
       res.status(201).json({
-        message: "Comment delete success",
+        message: "コメントを削除しました",
       });
     } catch (error: any) {
       res.status(401).json({

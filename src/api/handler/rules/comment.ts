@@ -1,7 +1,7 @@
 import { check, body } from "express-validator";
 
 export const commentCreateRule = [
-  check("body")
+  check("content")
     .not()
     .isEmpty()
     .withMessage("コメントを入力してください")
@@ -10,7 +10,7 @@ export const commentCreateRule = [
 ];
 
 export const commentUpdateRule = [
-  check("body")
+  check("content")
     .not()
     .isEmpty()
     .withMessage("コメントを入力してください")
