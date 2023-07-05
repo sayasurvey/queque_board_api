@@ -1,26 +1,19 @@
 import { Request, Response } from "express";
 import {
-  getComments,
   createComment,
   existCheckId,
   getComment,
   updateComment,
-  destroyComment,
+  destroyComment
+
 } from "../model/Comment";
 
 export class CommentController {
-  async allComment(_req: Request, res: Response): Promise<void> {
-    const Comments = await getComments();
-    res.status(200).json({
-      message: "Comment get all success",
-      Comments,
-    });
-  }
-
   async postComment(req: Request, res: Response): Promise<void> {
     try {
-      const { title, content, CommentImage, userId } = req.body;
-      const Comment = await createComment(title, content, CommentImage, userId);
+      const boardId = parseInt(req.params.id);
+      const { content, userId } = req.body;
+      const Comment = await createComment(content, userId, boardId);
 
       res.status(201).json({
         message: "Comment create success",
@@ -37,7 +30,6 @@ export class CommentController {
     try {
       const id = parseInt(req.params.id);
       const existId = await existCheckId(id);
-
       const Comment = await getComment(existId);
 
       res.status(201).json({
@@ -53,10 +45,11 @@ export class CommentController {
 
   async putComment(req: Request, res: Response): Promise<void> {
     try {
-      const id = parseInt(req.params.id);
-      const { title, content, CommentImage } = req.body;
-      const existId = await existCheckId(id);
-      const Comment = await updateComment(existId, title, content, CommentImage);
+      const boardId = parseInt(req.params.boardId);
+      const commentId = parseInt(req.params.commentId);
+      const { content, userId } = req.body;
+      const existId = await existCheckId(commentId);
+      const Comment = await updateComment(existId, content, userId, boardId);
 
       res.status(201).json({
         message: "Comment update success",
@@ -71,9 +64,9 @@ export class CommentController {
 
   async deleteComment(req: Request, res: Response): Promise<void> {
     try {
-      const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
-      const _Comment = await destroyComment(existId);
+      const commentId = parseInt(req.params.commentId);
+      const existId = await existCheckId(commentId);
+      const _comment = await destroyComment(existId);
 
       res.status(201).json({
         message: "Comment delete success",

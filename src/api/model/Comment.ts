@@ -2,77 +2,62 @@ import { Comment } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 import { privateDecrypt } from "crypto";
 
-export const getComments = async () => {
-  const Comment = await prismaContext.Comment.findMany();
-  return Comment;
-};
-
-export const createComment = async (
-  title: string,
-  content: string,
-  CommentImage: string,
-  userId: number
-): Promise<Comment> => {
-  const Comment = await prismaContext.Comment
-    .create({
-      data: {
-        title,
-        content,
-        CommentImage,
-        userId,
-      },
-    })
-    .catch(() => {
-      throw new Error("not post Comment");
-    });
-
-  return Comment;
-};
-export const existCheckId = async (id: number): Promise<number> => {
-  const checkId = await prismaContext.Comment.findUnique({
-    where: { id: id },
-    select: { id: true },
-  });
-
-  if (checkId === null) {
-    throw new Error("this Comment does not exist");
-  }
-
-  return checkId.id;
-};
-
 export const getComment = async (existId: number): Promise<Comment | null> => {
-  const Comment = await prismaContext.Comment
+  const comment = await prismaContext.comment
     .findUnique({
       where: { id: existId },
     })
     .catch(() => {
-      throw new Error("not get Comment");
+      throw new Error("not get board");
     });
 
-  return Comment;
+  return comment;
+};
+
+export const createComment = async (
+  content: string,
+  userId: number,
+  boardId: number
+): Promise<Comment> => {
+  const comment = await prismaContext.comment
+    .create({
+      data: {
+        content,
+        boardId,
+        userId
+      }
+    })
+    .catch(() => {
+      throw new Error("not post comment");
+    });
+
+  return comment;
 };
 
 export const updateComment = async (
-  existId: number,
-  title: string,
+  existId: number, //既に登録されているboardのidという意味
   content: string,
-  CommentImage: string
+  userId: number,
+  boardId: number
 ): Promise<Comment> => {
-  const Comment = await prismaContext.Comment
+  const comment = await prismaContext.comment
     .update({
       where: { id: existId },
-      data: { title, content, CommentImage },
+      data: {
+        content,
+        userId,
+        boardId
+      },
     })
     .catch(() => {
       throw new Error("not update Comment");
     });
 
-  return Comment;
+  return comment;
 };
 
 export const destroyComment = (existId: number): Promise<Comment | void> => {
-  const Comment = prismaContext.Comment
+  const comment = prismaContext.comment
     .delete({
       where: { id: existId },
     })
@@ -80,5 +65,18 @@ export const destroyComment = (existId: number): Promise<Comment | void> => {
       throw new Error("not delete Comment");
     });
 
-  return Comment;
+  return comment;
+};
+
+export const existCheckId = async (id: number): Promise<number> => {
+  const checkId = await prismaContext.comment.findUnique({
+    where: { id: id },
+    select: { id: true },
+  });
+
+  if (checkId === null) {
+    throw new Error("this comment does not exist");
+  }
+
+  return checkId.id;
 };
