@@ -9,6 +9,7 @@ import {
 export class UserController {
   async allUser(_req: Request, res: Response): Promise<void> {
     const users = await getUsers();
+
     res.status(200).json({
       message: "user get all success",
       users,
@@ -28,7 +29,7 @@ export class UserController {
         throw new NotFoundError(404, "this users does not get", "info");
       }
       res.status(200).json({
-        message: "show user",
+        message: "this user get success",
         user,
       });
     } catch (error: any) {
@@ -36,39 +37,49 @@ export class UserController {
     }
   }
 
-  async putUser(req: Request, res: Response): Promise<void> {
+  async putUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const { name, email, iconImage } = req.body;
     try {
       const id = parseInt(req.params.id);
+
       const user = await updateUser(id, name, email, iconImage);
+
       if (!user) {
         throw new Error("this user does not update");
       }
+
       res.status(201).json({
         message: "this user update is success",
         user,
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async deleteUser(req: Request, res: Response): Promise<void> {
+  async deleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const id = parseInt(req.params.id);
+
       const user = await destroyUser(id);
+
       if (!user) {
         throw new Error("this user does not delete");
       }
+
       res.status(201).json({
         message: "this user delete is success",
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 }
