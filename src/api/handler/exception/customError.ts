@@ -36,6 +36,30 @@ export class BadRequestError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  statusCode: number;
+  logLevel: string;
+
+  constructor(statusCode: number, message: string, logLevel: string) {
+    super(message);
+    this.statusCode = statusCode;
+    this.logLevel = logLevel;
+    Object.setPrototypeOf(this, UnauthorizedError.prototype);
+  }
+}
+
+export class ForbiddenError extends Error {
+  statusCode: number;
+  logLevel: string;
+
+  constructor(statusCode: number, message: string, logLevel: string) {
+    super(message);
+    this.statusCode = statusCode;
+    this.logLevel = logLevel;
+    Object.setPrototypeOf(this, ForbiddenError.prototype);
+  }
+}
+
 export class NotFoundError extends Error {
   statusCode: number;
   logLevel: string;
@@ -45,6 +69,18 @@ export class NotFoundError extends Error {
     this.statusCode = statusCode;
     this.logLevel = logLevel;
     Object.setPrototypeOf(this, NotFoundError.prototype);
+  }
+}
+
+export class RequestTimeoutError extends Error {
+  statusCode: number;
+  logLevel: string;
+
+  constructor(statusCode: number, message: string, logLevel: string) {
+    super(message);
+    this.statusCode = statusCode;
+    this.logLevel = logLevel;
+    Object.setPrototypeOf(this, RequestTimeoutError.prototype);
   }
 }
 
