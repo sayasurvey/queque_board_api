@@ -10,8 +10,8 @@ export class UserController {
   }
 
   async showUser(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
     try {
-      const { id } = req.body;
       const user = await getUser(id);
       if (!user) {
         throw new Error("this user does not exist");
@@ -28,8 +28,9 @@ export class UserController {
   }
 
   async putUser(req: Request, res: Response): Promise<void> {
+    const { name, email, iconImage } = req.body;
     try {
-      const { id, name, email, iconImage } = req.body;
+      const id = parseInt(req.params.id);
       const user = await updateUser(id, name, email, iconImage);
       if (!user) {
         throw new Error("this user does not exist");
@@ -47,7 +48,7 @@ export class UserController {
 
   async deleteUser(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
+      const id = parseInt(req.params.id);
       const user = await destroyUser(id);
       if (!user) {
         throw new Error("this user does not exist");
