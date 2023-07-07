@@ -27,8 +27,8 @@ export class BoardController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const { title, content, boardImage, userId } = req.body;
     try {
-      const { title, content, boardImage, userId } = req.body;
       const board = await createBoard(title, content, boardImage, userId);
 
       if (!board) {
@@ -52,7 +52,7 @@ export class BoardController {
       const id = parseInt(req.params.id);
       const existId = await existCheckId(id);
       if (!existId) {
-        throw new NotFoundError(404, "No post found for the given id", "info");
+        throw new NotFoundError(404, "no board found for the given id", "info");
       }
 
       const board = await getBoard(existId);
@@ -62,7 +62,7 @@ export class BoardController {
       }
 
       res.status(201).json({
-        message: "that board get is success",
+        message: "this board get is success",
         board,
       });
     } catch (error: any) {
@@ -75,13 +75,13 @@ export class BoardController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const { title, content, boardImage } = req.body;
     try {
       const id = parseInt(req.params.id);
-      const { title, content, boardImage } = req.body;
       const existId = await existCheckId(id);
 
       if (!existId) {
-        throw new NotFoundError(404, "No board found for the given id", "info");
+        throw new NotFoundError(404, "no board found for the given id", "info");
       }
 
       const board = await updateBoard(existId, title, content, boardImage);
@@ -91,7 +91,7 @@ export class BoardController {
       }
 
       res.status(201).json({
-        message: "that board update success",
+        message: "this board update success",
         board,
       });
     } catch (error: any) {
@@ -109,16 +109,16 @@ export class BoardController {
       const existId = await existCheckId(id);
 
       if (!existId) {
-        throw new NotFoundError(404, "No post found for the given id", "info");
+        throw new NotFoundError(404, "no board found for the given id", "info");
       }
       const board = await destroyBoard(existId);
 
       if (!board) {
-        throw new BadRequestError(400, "that board does not delete", "info");
+        throw new BadRequestError(400, "this board does not delete", "info");
       }
 
       res.status(201).json({
-        message: "board delete success",
+        message: "this board delete is success",
       });
     } catch (error: any) {
       return next(errorHandler(error, res));
