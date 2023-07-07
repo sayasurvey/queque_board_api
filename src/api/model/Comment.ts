@@ -35,7 +35,7 @@ export const createComment = async (
 };
 
 export const updateComment = async (
-  existId: number, //既に登録されているboardのidという意味
+  existId: number,
   content: string,
   userId: number,
   boardId: number
