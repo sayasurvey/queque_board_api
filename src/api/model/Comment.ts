@@ -8,7 +8,7 @@ export const getComment = async (existId: number): Promise<Comment | null> => {
       where: { id: existId },
     })
     .catch(() => {
-      throw new Error("not get board");
+      throw new Error("not get comment");
     });
 
   return comment;
@@ -28,7 +28,7 @@ export const createComment = async (
       }
     })
     .catch(() => {
-      throw new Error("not post comment");
+      throw new Error("not board comment");
     });
 
   return comment;
@@ -50,7 +50,7 @@ export const updateComment = async (
       },
     })
     .catch(() => {
-      throw new Error("not update Comment");
+      throw new Error("not update comment");
     });
 
   return comment;
@@ -62,7 +62,7 @@ export const destroyComment = (existId: number): Promise<Comment | void> => {
       where: { id: existId },
     })
     .catch(() => {
-      throw new Error("not delete Comment");
+      throw new Error("not delete comment");
     });
 
   return comment;

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   createComment,
   existCheckId,
-  getComment,
   updateComment,
   destroyComment
 
@@ -16,7 +15,7 @@ export class CommentController {
       const Comment = await createComment(content, userId, boardId);
 
       res.status(201).json({
-        message: "コメントを投稿しました",
+        message: "comment create success",
         Comment,
       });
     } catch (error: any) {
@@ -35,7 +34,7 @@ export class CommentController {
       const Comment = await updateComment(existId, content, userId, boardId);
 
       res.status(201).json({
-        message: "コメントを更新しました",
+        message: "comment update success",
         Comment,
       });
     } catch (error: any) {
@@ -52,7 +51,7 @@ export class CommentController {
       const _comment = await destroyComment(existId);
 
       res.status(201).json({
-        message: "コメントを削除しました",
+        message: "comment delete success",
       });
     } catch (error: any) {
       res.status(401).json({
