@@ -2,15 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import {
   getBoards,
   createBoard,
-  existCheckId,
   getBoard,
   updateBoard,
   destroyBoard,
 } from "../model/Board";
 import {
   errorHandler,
-  BadRequestError,
-  NotFoundError,
+  CustomException,
 } from "../handler/exception/customError";
 
 export class BoardController {
@@ -27,19 +25,15 @@ export class BoardController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const { title, content, boardImage, userId } = req.body;
     try {
-      const { title, content, boardImage, userId } = req.body;
       const board = await createBoard(title, content, boardImage, userId);
 
-      if (!board) {
-        throw new BadRequestError(
-          400,
-          "this create board invalid parameter",
-          "info"
-        );
-      }
+      if (!board)
+        throw new CustomException(400, "this board does not create", "info");
+
       res.status(201).json({
-        message: "board create success",
+        message: "this board create is success",
         board,
       });
     } catch (error: any) {
@@ -54,23 +48,14 @@ export class BoardController {
   ): Promise<void> {
     try {
       const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
-      if (!existId) {
-        throw new NotFoundError(
-          404,
-          "this board does not exist the NotFoundError",
-          "info"
-        );
-      }
 
-      const board = await getBoard(existId);
+      const board = await getBoard(id);
 
-      if (!board) {
-        throw new BadRequestError(404, "this get board", "info");
-      }
+      if (!board)
+        throw new CustomException(404, "this board does not get", "info");
 
-      res.status(201).json({
-        message: "board sho get success",
+      res.status(200).json({
+        message: "this board get is success",
         board,
       });
     } catch (error: any) {
@@ -83,31 +68,17 @@ export class BoardController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const { title, content, boardImage } = req.body;
     try {
       const id = parseInt(req.params.id);
-      const { title, content, boardImage } = req.body;
-      const existId = await existCheckId(id);
 
-      if (!existId) {
-        throw new NotFoundError(
-          404,
-          "this board does not exist the NotFoundError",
-          "info"
-        );
-      }
+      const board = await updateBoard(id, title, content, boardImage);
 
-      const board = await updateBoard(existId, title, content, boardImage);
-
-      if (!board) {
-        throw new BadRequestError(
-          400,
-          "this update board invalid parameter",
-          "info"
-        );
-      }
+      if (!board)
+        throw new CustomException(400, "this board does not update", "info");
 
       res.status(201).json({
-        message: "board update success",
+        message: "this board update success",
         board,
       });
     } catch (error: any) {
@@ -122,20 +93,14 @@ export class BoardController {
   ): Promise<void> {
     try {
       const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
 
-      if (!existId) {
-        throw new NotFoundError(
-          404,
-          "this board does not exist the NotFoundError",
-          "info"
-        );
-      }
-      const board = await destroyBoard(existId);
+      const board = await destroyBoard(id);
 
-      console.log({ board });
+      if (!board)
+        throw new CustomException(400, "this board does not delete", "info");
+
       res.status(201).json({
-        message: "board delete success",
+        message: "this board delete is success",
       });
     } catch (error: any) {
       return next(errorHandler(error, res));

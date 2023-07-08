@@ -23,14 +23,6 @@ export const createBoard = async (
 
   return board;
 };
-export const existCheckId = async (id: number): Promise<number | undefined> => {
-  const checkId = await prismaContext.board.findUnique({
-    where: { id: id },
-    select: { id: true },
-  });
-
-  return checkId?.id;
-};
 
 export const getBoard = async (existId: number): Promise<Board | null> => {
   const board = await prismaContext.board.findUnique({

@@ -1,16 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Response } from "express";
 
-export const errorHandler = (
-  error: any,
-  // req: Request,
-  res: Response
-  // next: NextFunction
-) => {
+export const errorHandler = (error: any, res: Response) => {
   error.statusCode = error.statusCode || 500;
   error.message = error.message || null;
   error.logLevel = error.logLevel || null;
 
-  if (error instanceof BadRequestError || error instanceof NotFoundError) {
+  if (error instanceof CustomException) {
     return res.status(error.statusCode).json({
       statusCode: error.statusCode,
       message: error.message,
@@ -24,7 +19,7 @@ export const errorHandler = (
   }
 };
 
-export class BadRequestError extends Error {
+export class CustomException extends Error {
   statusCode: number;
   logLevel: string;
 
@@ -32,19 +27,7 @@ export class BadRequestError extends Error {
     super(message);
     this.statusCode = statusCode;
     this.logLevel = logLevel;
-    Object.setPrototypeOf(this, BadRequestError.prototype);
-  }
-}
-
-export class NotFoundError extends Error {
-  statusCode: number;
-  logLevel: string;
-
-  constructor(statusCode: number, message: string, logLevel: string) {
-    super(message);
-    this.statusCode = statusCode;
-    this.logLevel = logLevel;
-    Object.setPrototypeOf(this, NotFoundError.prototype);
+    Object.setPrototypeOf(this, CustomException.prototype);
   }
 }
 
@@ -56,6 +39,6 @@ export class InternalServerError extends Error {
     super(message);
     this.statusCode = statusCode;
     this.logLevel = logLevel;
-    Object.setPrototypeOf(this, BadRequestError.prototype);
+    Object.setPrototypeOf(this, InternalServerError.prototype);
   }
 }
