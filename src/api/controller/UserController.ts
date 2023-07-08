@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { getUsers, updateUser, getUser, destroyUser } from "../model/User";
 import {
   errorHandler,
-  BadRequestError,
-  NotFoundError,
+  CustomException,
 } from "../handler/exception/customError";
 
 export class UserController {
@@ -26,7 +25,7 @@ export class UserController {
       const user = await getUser(id);
 
       if (!user) {
-        throw new NotFoundError(404, "this users does not get", "info");
+        throw new CustomException(404, "this users does not get", "info");
       }
       res.status(200).json({
         message: "this user get success",
@@ -48,9 +47,8 @@ export class UserController {
 
       const user = await updateUser(id, name, email, iconImage);
 
-      if (!user) {
-        throw new Error("this user does not update");
-      }
+      if (!user)
+        throw new CustomException(400, "this user does not update", "info");
 
       res.status(201).json({
         message: "this user update is success",
@@ -71,9 +69,8 @@ export class UserController {
 
       const user = await destroyUser(id);
 
-      if (!user) {
-        throw new Error("this user does not delete");
-      }
+      if (!user)
+        throw new CustomException(400, "this user does not delete", "info");
 
       res.status(201).json({
         message: "this user delete is success",

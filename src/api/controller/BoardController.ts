@@ -8,7 +8,7 @@ import {
 } from "../model/Board";
 import {
   errorHandler,
-  BadRequestError,
+  CustomException,
 } from "../handler/exception/customError";
 
 export class BoardController {
@@ -29,9 +29,9 @@ export class BoardController {
     try {
       const board = await createBoard(title, content, boardImage, userId);
 
-      if (!board) {
-        throw new BadRequestError(400, "this board does not create", "info");
-      }
+      if (!board)
+        throw new CustomException(400, "this board does not create", "info");
+
       res.status(201).json({
         message: "this board create is success",
         board,
@@ -51,11 +51,10 @@ export class BoardController {
 
       const board = await getBoard(id);
 
-      if (!board) {
-        throw new BadRequestError(400, "this board does not get", "info");
-      }
+      if (!board)
+        throw new CustomException(404, "this board does not get", "info");
 
-      res.status(201).json({
+      res.status(200).json({
         message: "this board get is success",
         board,
       });
@@ -75,9 +74,8 @@ export class BoardController {
 
       const board = await updateBoard(id, title, content, boardImage);
 
-      if (!board) {
-        throw new BadRequestError(400, "this board does not update", "info");
-      }
+      if (!board)
+        throw new CustomException(400, "this board does not update", "info");
 
       res.status(201).json({
         message: "this board update success",
@@ -98,9 +96,8 @@ export class BoardController {
 
       const board = await destroyBoard(id);
 
-      if (!board) {
-        throw new BadRequestError(400, "this board does not delete", "info");
-      }
+      if (!board)
+        throw new CustomException(400, "this board does not delete", "info");
 
       res.status(201).json({
         message: "this board delete is success",
