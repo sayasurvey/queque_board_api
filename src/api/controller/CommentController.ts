@@ -9,9 +9,10 @@ import {
 
 export class CommentController {
   async postComment(req: Request, res: Response): Promise<void> {
+    const { content, userId } = req.body;
+
     try {
       const boardId = parseInt(req.params.id);
-      const { content, userId } = req.body;
       const Comment = await createComment(content, userId, boardId);
 
       res.status(201).json({
@@ -26,10 +27,11 @@ export class CommentController {
   }
 
   async putComment(req: Request, res: Response): Promise<void> {
+    const { content, userId } = req.body;
+
     try {
       const boardId = parseInt(req.params.boardId);
       const commentId = parseInt(req.params.commentId);
-      const { content, userId } = req.body;
       const existId = await existCheckId(commentId);
       const Comment = await updateComment(existId, content, userId, boardId);
 
