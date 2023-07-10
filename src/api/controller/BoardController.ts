@@ -1,12 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   getBoards,
   createBoard,
-  existCheckId,
   getBoard,
   updateBoard,
   destroyBoard,
 } from "../model/Board";
+import {
+  errorHandler,
+  CustomException,
+} from "../handler/exception/customError";
 
 export class BoardController {
   async allBoard(_req: Request, res: Response): Promise<void> {
@@ -17,71 +20,90 @@ export class BoardController {
     });
   }
 
-  async postBoard(req: Request, res: Response): Promise<void> {
+  async postBoard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { title, content, boardImage, userId } = req.body;
     try {
-      const { title, content, boardImage, userId } = req.body;
       const board = await createBoard(title, content, boardImage, userId);
 
+      if (!board)
+        throw new CustomException(400, "this board does not create", "info");
+
       res.status(201).json({
-        message: "board create success",
+        message: "this board create is success",
         board,
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async showBoard(req: Request, res: Response): Promise<void> {
+  async showBoard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
 
-      const board = await getBoard(existId);
+      const board = await getBoard(id);
 
-      res.status(201).json({
-        message: "board sho get success",
+      if (!board)
+        throw new CustomException(404, "this board does not get", "info");
+
+      res.status(200).json({
+        message: "this board get is success",
         board,
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async putBoard(req: Request, res: Response): Promise<void> {
+  async putBoard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { title, content, boardImage } = req.body;
     try {
       const id = parseInt(req.params.id);
-      const { title, content, boardImage } = req.body;
-      const existId = await existCheckId(id);
-      const board = await updateBoard(existId, title, content, boardImage);
+
+      const board = await updateBoard(id, title, content, boardImage);
+
+      if (!board)
+        throw new CustomException(400, "this board does not update", "info");
 
       res.status(201).json({
-        message: "board update success",
+        message: "this board update success",
         board,
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async deleteBoard(req: Request, res: Response): Promise<void> {
+  async deleteBoard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const id = parseInt(req.params.id);
-      const existId = await existCheckId(id);
-      const _board = await destroyBoard(existId);
+
+      const board = await destroyBoard(id);
+
+      if (!board)
+        throw new CustomException(400, "this board does not delete", "info");
 
       res.status(201).json({
-        message: "board delete success",
+        message: "this board delete is success",
       });
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 }
