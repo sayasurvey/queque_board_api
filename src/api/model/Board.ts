@@ -41,7 +41,7 @@ export const createBoard = async (
 
 export const getBoard = async (existId: number): Promise<Board | null> => {
   const board = await prismaContext.board
-    .findUnique({
+    .findUniqueOrThrow({
       where: { id: existId },
     })
     .catch(() => {

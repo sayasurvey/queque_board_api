@@ -43,7 +43,7 @@ export const fetchUserPassword = async (
   email: string
 ): Promise<string | undefined> => {
   const resultUser = await prismaContext.user
-    .findFirst({
+    .findFirstOrThrow({
       where: {
         email: email,
       },

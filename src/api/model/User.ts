@@ -15,7 +15,7 @@ export const getUsers = async () => {
 
 export const getUser = async (id: number): Promise<User | null> => {
   const user = await prismaContext.user
-    .findUnique({
+    .findUniqueOrThrow({
       where: {
         id,
       },
