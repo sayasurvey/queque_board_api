@@ -15,7 +15,7 @@ export class BoardController {
   async allBoard(_req: Request, res: Response): Promise<void> {
     const boards = await getBoards();
     res.status(200).json({
-      message: "board get all success",
+      message: "board get all is success",
       boards,
     });
   }
@@ -51,8 +51,9 @@ export class BoardController {
 
       const board = await getBoard(id);
 
-      if (!board)
+      if (!board) {
         throw new CustomException(404, "this board does not get", "info");
+      }
 
       res.status(200).json({
         message: "this board get is success",
@@ -73,16 +74,19 @@ export class BoardController {
       const id = parseInt(req.params.id);
 
       const board = await updateBoard(id, title, content, boardImage);
-
-      if (!board)
+      if (!board) {
         throw new CustomException(400, "this board does not update", "info");
+      }
 
       res.status(201).json({
-        message: "this board update success",
+        message: "this board update is success",
         board,
       });
     } catch (error: any) {
+      console.log("controller catch");
+      // console.log({ error });
       return next(errorHandler(error, res));
+      // return next(errorHandler(error, res));
     }
   }
 
