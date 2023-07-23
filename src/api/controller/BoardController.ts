@@ -83,10 +83,7 @@ export class BoardController {
         board,
       });
     } catch (error: any) {
-      console.log("controller catch");
-      // console.log({ error });
       return next(errorHandler(error, res));
-      // return next(errorHandler(error, res));
     }
   }
 
