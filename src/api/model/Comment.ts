@@ -67,16 +67,3 @@ export const destroyComment = (existId: number): Promise<Comment | void> => {
 
   return comment;
 };
-
-export const existCheckId = async (id: number): Promise<number> => {
-  const checkId = await prismaContext.comment.findUnique({
-    where: { id: id },
-    select: { id: true },
-  });
-
-  if (checkId === null) {
-    throw new Error("this comment does not exist");
-  }
-
-  return checkId.id;
-};

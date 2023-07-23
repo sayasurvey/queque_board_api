@@ -1,64 +1,82 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   createComment,
-  existCheckId,
   updateComment,
   destroyComment
-
 } from "../model/Comment";
+import {
+  errorHandler,
+  CustomException,
+} from "../handler/exception/customError";
 
 export class CommentController {
-  async postComment(req: Request, res: Response): Promise<void> {
+  async postComment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const { content, userId } = req.body;
 
     try {
       const boardId = parseInt(req.params.id);
-      const Comment = await createComment(content, userId, boardId);
+      const comment = await createComment(content, userId, boardId);
+
+      if (!comment)
+        throw new CustomException(400, "this comment does not create", "info");
 
       res.status(201).json({
-        message: "comment create success",
-        Comment,
+        message: "this comment create is success",
+        comment,
       });
+
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async putComment(req: Request, res: Response): Promise<void> {
+  async putComment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const { content, userId } = req.body;
 
     try {
       const boardId = parseInt(req.params.boardId);
       const commentId = parseInt(req.params.commentId);
-      const existId = await existCheckId(commentId);
-      const Comment = await updateComment(existId, content, userId, boardId);
+      const comment = await updateComment(commentId, content, userId, boardId);
+
+      if (!comment)
+        throw new CustomException(400, "this comment does not update", "info");
 
       res.status(201).json({
-        message: "comment update success",
-        Comment,
+        message: "this comment update success",
+        comment,
       });
+
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res));
     }
   }
 
-  async deleteComment(req: Request, res: Response): Promise<void> {
+  async deleteComment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const commentId = parseInt(req.params.commentId);
-      const existId = await existCheckId(commentId);
-      const _comment = await destroyComment(existId);
+      const comment = await destroyComment(commentId);
 
-      res.status(201).json({
-        message: "comment delete success",
+      if (!comment)
+        throw new CustomException(400, "this comment does not delete", "info");
+
+        res.status(201).json({
+          message: "this comment delete is success",
       });
+      
     } catch (error: any) {
-      res.status(401).json({
-        message: error.message,
-      });
+      return next(errorHandler(error, res))
     }
   }
 }
