@@ -1,8 +1,19 @@
-import { Board } from "@prisma/client";
+import { Board, Prisma } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
+import { CustomException } from "../handler/exception/customError";
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+} from "@prisma/client/runtime";
 
 export const getBoards = async () => {
-  const board = await prismaContext.board.findMany();
+  const board = await prismaContext.board.findMany().catch(() => {
+    throw new CustomException(
+      400,
+      "this board does not get all caused prisma error",
+      "info"
+    );
+  });
   return board;
 };
 
@@ -12,23 +23,38 @@ export const createBoard = async (
   boardImage: string,
   userId: number
 ): Promise<Board> => {
-  const board = await prismaContext.board.create({
-    data: {
-      title,
-      content,
-      boardImage,
-      userId,
-    },
-  });
+  const board = await prismaContext.board
+    .create({
+      data: {
+        title,
+        content,
+        boardImage,
+        userId,
+      },
+    })
+    .catch(() => {
+      throw new CustomException(
+        400,
+        "this board does not create caused prisma error",
+        "info"
+      );
+    });
 
   return board;
 };
 
 export const getBoard = async (existId: number): Promise<Board | null> => {
-  const board = await prismaContext.board.findUnique({
-    where: { id: existId },
-  });
-
+  const board = await prismaContext.board
+    .findUnique({
+      where: { id: existId },
+    })
+    .catch(() => {
+      throw new CustomException(
+        400,
+        "this board does not get caused prisma error",
+        "info"
+      );
+    });
   return board;
 };
 
@@ -37,19 +63,34 @@ export const updateBoard = async (
   title: string,
   content: string,
   boardImage: string
-): Promise<Board> => {
-  const board = await prismaContext.board.update({
-    where: { id: existId },
-    data: { title, content, boardImage },
-  });
-
+): Promise<Board | null> => {
+  const board = await prismaContext.board
+    .update({
+      where: { id: existId },
+      data: { title, content, boardImage },
+    })
+    .catch(() => {
+      throw new CustomException(
+        400,
+        "this board does not update caused prisma error",
+        "info"
+      );
+    });
   return board;
 };
 
 export const destroyBoard = (existId: number): Promise<Board | void> => {
-  const board = prismaContext.board.delete({
-    where: { id: existId },
-  });
+  const board = prismaContext.board
+    .delete({
+      where: { id: existId },
+    })
+    .catch(() => {
+      throw new CustomException(
+        400,
+        "this board does not delete caused prisma error",
+        "info"
+      );
+    });
 
   return board;
 };
