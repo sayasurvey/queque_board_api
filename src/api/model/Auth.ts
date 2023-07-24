@@ -8,7 +8,7 @@ export const registerUser = async (
   name: string,
   email: string,
   hashedPassword: string
-): Promise<User> => {
+): Promise<User | null> => {
   const password = hashedPassword;
   const user = await prismaContext.user
     .create({
@@ -19,11 +19,7 @@ export const registerUser = async (
       },
     })
     .catch(() => {
-      throw new CustomException(
-        500,
-        "failed to hash the password caused prisma error",
-        "error"
-      );
+      return null;
     });
 
   return user;
@@ -41,7 +37,7 @@ export const alreadyUserCheck = async (email: string): Promise<User | null> => {
 
 export const fetchUserPassword = async (
   email: string
-): Promise<string | undefined> => {
+): Promise<string | undefined | null> => {
   const resultUser = await prismaContext.user
     .findFirstOrThrow({
       where: {
@@ -52,11 +48,7 @@ export const fetchUserPassword = async (
       },
     })
     .catch(() => {
-      throw new CustomException(
-        404,
-        "this password dose not get caused prisma error",
-        "warning"
-      );
+      return null;
     });
 
   const existedUserPassword = resultUser?.password;
