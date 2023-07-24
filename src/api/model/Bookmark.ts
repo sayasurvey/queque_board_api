@@ -1,10 +1,16 @@
 import { Bookmark } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 
-export const getBookmark = async (user_id: number): Promise<Bookmark[]> => {
-  const bookmark = await prismaContext.bookmark.findMany({
-    where: { userId: user_id },
-  });
+export const getBookmark = async (
+  user_id: number
+): Promise<Bookmark[] | null> => {
+  const bookmark = await prismaContext.bookmark
+    .findMany({
+      where: { userId: user_id },
+    })
+    .catch(() => {
+      return null;
+    });
 
   return bookmark;
 };
