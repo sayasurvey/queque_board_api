@@ -18,22 +18,30 @@ export const getBookmark = async (
 export const createBookmark = async (
   user_id: number,
   board_id: number
-): Promise<Bookmark> => {
-  const bookmark = await prismaContext.bookmark.create({
-    data: {
-      boardId: board_id,
-      userId: user_id,
-    },
-  });
+): Promise<Bookmark | null> => {
+  const bookmark = await prismaContext.bookmark
+    .create({
+      data: {
+        boardId: board_id,
+        userId: user_id,
+      },
+    })
+    .catch(() => {
+      return null;
+    });
   return bookmark;
 };
 
 export const destroyBookmark = async (
   bookmark_id: number
-): Promise<Bookmark> => {
-  const bookmark = await prismaContext.bookmark.delete({
-    where: { id: bookmark_id },
-  });
+): Promise<Bookmark | null> => {
+  const bookmark = await prismaContext.bookmark
+    .delete({
+      where: { id: bookmark_id },
+    })
+    .catch(() => {
+      return null;
+    });
 
   return bookmark;
 };

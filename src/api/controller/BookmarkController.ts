@@ -20,7 +20,7 @@ export class BookmarkController {
       const bookmark = await getBookmark(user_id);
 
       if (!bookmark) {
-        throw new CustomException(400, "this bookmarks done not get", "warn");
+        throw new CustomException(400, "this bookmarks done not get", "info");
       }
 
       res.status(200).json({
@@ -43,11 +43,11 @@ export class BookmarkController {
       const bookmark = await createBookmark(user_id, board_id.boardId);
 
       if (!bookmark) {
-        throw new CustomException(400, "this bookmark done not post", "warn");
+        throw new CustomException(400, "this bookmark done not create", "info");
       }
 
       res.status(201).json({
-        message: "this bookmark post is success",
+        message: "this bookmark create is success",
         bookmark,
       });
     } catch (error: any) {
@@ -65,7 +65,7 @@ export class BookmarkController {
       const bookmark = await destroyBookmark(bookmark_id);
 
       if (!bookmark) {
-        throw new CustomException(400, "this bookmark done not delete", "warn");
+        throw new CustomException(400, "this bookmark done not delete", "info");
       }
 
       res.status(201).json({
