@@ -7,6 +7,7 @@ import {
   getBookmark,
   createBookmark,
   destroyBookmark,
+  findExistedBookmark,
 } from "../model/Bookmark";
 
 export class BookmarkController {
@@ -40,6 +41,16 @@ export class BookmarkController {
     const board_id = req.body;
     try {
       const user_id = parseInt(req.params.user_id);
+
+      const existedBookmark = await findExistedBookmark(
+        user_id,
+        board_id.boardId
+      );
+
+      if (existedBookmark) {
+        throw new CustomException(400, "this bookmark is existed", "info");
+      }
+
       const bookmark = await createBookmark(user_id, board_id.boardId);
 
       if (!bookmark) {
