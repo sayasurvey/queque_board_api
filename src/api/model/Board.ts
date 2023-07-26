@@ -2,7 +2,15 @@ import { Board } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 
 export const getBoards = async () => {
-  const board = await prismaContext.board.findMany();
+  const board = await prismaContext.board.findMany({
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
   return board;
 };
 
@@ -32,6 +40,13 @@ export const getBoard = async (existId: number): Promise<Board | null> => {
   const board = await prismaContext.board
     .findUniqueOrThrow({
       where: { id: existId },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     })
     .catch(() => {
       return null;
