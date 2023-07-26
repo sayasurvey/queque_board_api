@@ -1,6 +1,5 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
-import { CustomException } from "../handler/exception/customError";
 
 // auth/register
 

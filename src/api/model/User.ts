@@ -1,6 +1,5 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
-import { CustomException } from "../handler/exception/customError";
 
 export const getUsers = async () => {
   const users = await prismaContext.user.findMany();

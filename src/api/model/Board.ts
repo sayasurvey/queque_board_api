@@ -1,6 +1,5 @@
 import { Board } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
-import { CustomException } from "../handler/exception/customError";
 
 export const getBoards = async () => {
   const board = await prismaContext.board.findMany();
