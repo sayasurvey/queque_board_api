@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 const { AuthController } = require("../../api/controller/AuthController");
 const { validateError } = require("../../api/handler/rules/validateError");
+const authenticateUser = require("../../middleware/authenticateUser");
 const {
   authRegisterRule,
   authLoginRule,
@@ -11,6 +12,6 @@ const authContext = new AuthController();
 
 router.post("/signup", authRegisterRule, validateError, authContext.register);
 router.post("/signin", authLoginRule, validateError, authContext.login);
-router.post("/signout", authContext.logout);
+router.post("/signout", authenticateUser, authContext.logout);
 
 module.exports = router;
