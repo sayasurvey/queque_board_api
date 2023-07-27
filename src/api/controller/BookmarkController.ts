@@ -9,7 +9,7 @@ import {
   destroyBookmark,
   findExistedBookmark,
 } from "../model/Bookmark";
-
+// PR提出用コメント
 export class BookmarkController {
   async getUserBookmark(
     req: Request,
