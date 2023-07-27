@@ -13,6 +13,7 @@ export const getBookmark = async (user_id: number): Promise<any> => {
     .catch(() => {
       return null;
     });
+  console.log({ bookmark });
 
   return bookmark;
 };
