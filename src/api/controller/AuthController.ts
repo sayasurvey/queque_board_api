@@ -77,7 +77,6 @@ export class AuthController {
     try {
       res.clearCookie("jwtToken", {
         httpOnly: true,
-        expires: new Date(Date.now() + 86400000), // 1日後の有効期限
       });
 
       res.status(200).json({ message: "Logout success" });

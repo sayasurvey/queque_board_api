@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
+import { CustomException } from "../handler/exception/customError";
 
 // auth/register
 
@@ -7,15 +8,19 @@ export const registerUser = async (
   name: string,
   email: string,
   hashedPassword: string
-): Promise<User> => {
+): Promise<User | null> => {
   const password = hashedPassword;
-  const user = await prismaContext.user.create({
-    data: {
-      name,
-      email,
-      password,
-    },
-  });
+  const user = await prismaContext.user
+    .create({
+      data: {
+        name,
+        email,
+        password,
+      },
+    })
+    .catch(() => {
+      return null;
+    });
 
   return user;
 };
@@ -32,15 +37,19 @@ export const alreadyUserCheck = async (email: string): Promise<User | null> => {
 
 export const fetchUserPassword = async (
   email: string
-): Promise<string | undefined> => {
-  const resultUser = await prismaContext.user.findFirst({
-    where: {
-      email: email,
-    },
-    select: {
-      password: true,
-    },
-  });
+): Promise<string | undefined | null> => {
+  const resultUser = await prismaContext.user
+    .findFirstOrThrow({
+      where: {
+        email: email,
+      },
+      select: {
+        password: true,
+      },
+    })
+    .catch(() => {
+      return null;
+    });
 
   const existedUserPassword = resultUser?.password;
 
