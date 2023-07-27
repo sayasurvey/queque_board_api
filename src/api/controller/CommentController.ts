@@ -50,7 +50,7 @@ export class CommentController {
         throw new CustomException(400, "this comment does not update", "info");
 
       res.status(201).json({
-        message: "this comment update success",
+        message: "this comment update is success",
         comment,
       });
 

@@ -18,7 +18,7 @@ export const createComment = async (
   content: string,
   userId: number,
   boardId: number
-): Promise<Comment> => {
+): Promise<Comment | null> => {
   const comment = await prismaContext.comment
     .create({
       data: {
@@ -28,7 +28,7 @@ export const createComment = async (
       }
     })
     .catch(() => {
-      throw new Error("not board comment");
+      return null;
     });
 
   return comment;
@@ -39,7 +39,7 @@ export const updateComment = async (
   content: string,
   userId: number,
   boardId: number
-): Promise<Comment> => {
+): Promise<Comment | null> => {
   const comment = await prismaContext.comment
     .update({
       where: { id: existId },
@@ -50,19 +50,19 @@ export const updateComment = async (
       },
     })
     .catch(() => {
-      throw new Error("not update comment");
+      return null;
     });
 
   return comment;
 };
 
-export const destroyComment = (existId: number): Promise<Comment | void> => {
-  const comment = prismaContext.comment
+export const destroyComment = async (existId: number): Promise<Comment | null> => {
+  const comment = await prismaContext.comment
     .delete({
       where: { id: existId },
     })
     .catch(() => {
-      throw new Error("not delete comment");
+      return null;
     });
 
   return comment;
