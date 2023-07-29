@@ -2,6 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv";
 import { PrismaClient } from '@prisma/client';
+import {
+  errorHandler,
+  CustomException
+} from "../api/handler/exception/customError";
 
 dotenv.config();
 
@@ -15,24 +19,24 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      return res.status(401).json({ message: 'Authentication is required' });
+      throw new CustomException(401, 'Authentication is required', "info");
     }
 
     const decode = await tokenDecode(token);
     const { email } = decode
     
     if (!decode) {
-      return res.status(401).json({ message: 'The token is invalid' });
+      throw new CustomException(401, 'The token is invalid', "info");
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      throw new CustomException(401, 'User not found', "info");
     }
 
-  } catch (error) {
-    return res.status(500).json({ message: 'The token verification failed' });
+  } catch (error: any) {
+    return next(errorHandler(error, res));
   }
   next();
 };
