@@ -6,6 +6,7 @@ import {
   updateBoard,
   destroyBoard,
 } from "../model/Board";
+import { boardImagePutS3 } from "../service/board";
 import {
   errorHandler,
   CustomException,
@@ -27,6 +28,12 @@ export class BoardController {
   ): Promise<void> {
     const { title, content, boardImage, userId } = req.body;
     try {
+      const boardImageS3 = await boardImagePutS3(boardImage);
+
+      if(!boardImageS3) {
+        throw new CustomException(400, 'this s3Bucket done not upload', 'warn')
+      }
+
       const board = await createBoard(title, content, boardImage, userId);
 
       if (!board)
