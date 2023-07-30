@@ -23,8 +23,8 @@ export const createComment = async (
     .create({
       data: {
         content,
-        boardId,
-        userId
+        userId,
+        boardId
       }
     })
     .catch(() => {
