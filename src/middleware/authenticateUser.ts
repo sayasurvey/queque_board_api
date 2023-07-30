@@ -24,10 +24,6 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 
     const decode = await tokenDecode(token);
     const { email } = decode
-    
-    if (!decode) {
-      throw new CustomException(401, 'The token is invalid', "info");
-    }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
@@ -42,7 +38,14 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 };
 
 const tokenDecode = async (token: string): Promise<JwtPayload> => {
-  const decodedToken = await jwt.verify(token, jwtSecret) as JwtPayload;
+  let decodedToken: JwtPayload;
+
+  try {
+    decodedToken = await jwt.verify(token, jwtSecret) as JwtPayload;
+  } catch (error: any){
+    throw new CustomException(401, 'The token is invalid', "warn");
+  }
+  
   return decodedToken;
 };
 
