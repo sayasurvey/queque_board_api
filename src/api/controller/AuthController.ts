@@ -76,8 +76,7 @@ export class AuthController {
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       res.clearCookie("jwtToken", {
-        httpOnly: true,
-        expires: new Date(Date.now() + 86400000), // 1日後の有効期限
+        httpOnly: true
       });
 
       res.status(200).json({ message: "Logout success" });

@@ -1,12 +1,13 @@
 import express from "express";
-const router = express.Router();
 import { UserController } from "../../api/controller/UserController";
+const router = express.Router();
+const tokenVerify = require("../../middleware/tokenVerify");
 
 const userContext = new UserController();
 
-router.get("/users", userContext.allUser);
-router.put("/user/:id", userContext.putUser);
-router.get("/user/:id", userContext.showUser);
-router.delete("/user/:id", userContext.deleteUser);
+router.get("/users", tokenVerify, userContext.allUser);
+router.put("/user/:id", tokenVerify, userContext.putUser);
+router.get("/user/:id", tokenVerify, userContext.showUser);
+router.delete("/user/:id", tokenVerify, userContext.deleteUser);
 
 module.exports = router;
