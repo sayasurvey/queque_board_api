@@ -1,6 +1,5 @@
 import { Comment } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
-import { privateDecrypt } from "crypto";
 
 export const getComment = async (existId: number): Promise<Comment | null> => {
   const comment = await prismaContext.comment
