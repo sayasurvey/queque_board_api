@@ -22,8 +22,12 @@ const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const decode = await tokenDecode(token);
+    
+    if (!decode) {
+      throw new CustomException(401, 'The token is invalid', "warn");
+    }
+    
     const { email } = decode
-
     const user = await prismaContext.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -36,16 +40,13 @@ const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const tokenDecode = async (token: string): Promise<JwtPayload> => {
-  let decodedToken: JwtPayload;
-
+const tokenDecode = (token: string): JwtPayload | null => {
   try {
-    decodedToken = await jwt.verify(token, jwtSecret) as JwtPayload;
-  } catch (error: any){
-    throw new CustomException(401, 'The token is invalid', "warn");
+    const decodedToken = jwt.verify(token, jwtSecret) as JwtPayload;
+    return decodedToken;
+  } catch (error) {
+    return null;
   }
-  
-  return decodedToken;
 };
 
 export = tokenVerify;
