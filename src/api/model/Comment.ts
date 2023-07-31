@@ -1,18 +1,6 @@
 import { Comment } from "@prisma/client";
 import { prismaContext } from "../../lib/prismaContext";
 
-export const getComment = async (existId: number): Promise<Comment | null> => {
-  const comment = await prismaContext.comment
-    .findUnique({
-      where: { id: existId },
-    })
-    .catch(() => {
-      throw new Error("not get comment");
-    });
-
-  return comment;
-};
-
 export const createComment = async (
   content: string,
   userId: number,
