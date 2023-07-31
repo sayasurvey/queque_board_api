@@ -28,7 +28,8 @@ const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
     }
     
     const { email } = decode
-    const user = await prismaContext.user.findUnique({ where: { email } });
+    const user = await prismaContext.user.findUniqueOrThrow({ where: { email } })
+                                         .catch(() => { return null })
 
     if (!user) {
       throw new CustomException(401, 'User not found', "info");
