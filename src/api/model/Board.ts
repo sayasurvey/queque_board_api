@@ -48,8 +48,7 @@ export const getBoard = async (existId: number): Promise<Board | null> => {
           },
         },
         comments: {
-          select: {
-            content: true,
+          include: {
             user: {
               select: {
                 name: true,
