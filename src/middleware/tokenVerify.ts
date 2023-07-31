@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv";
+import { prismaContext } from "../lib/prismaContext";
 import {
   errorHandler,
   CustomException
@@ -9,7 +10,6 @@ import {
 dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET_KEY || "";
-import { prismaContext } from "../lib/prismaContext";
 
 // JWTのデコードとユーザー確認を行うミドルウェア
 const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
