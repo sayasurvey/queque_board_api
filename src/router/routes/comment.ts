@@ -10,7 +10,7 @@ const { validateError } = require("../../api/handler/rules/validateError");
 
 const commentContext = new CommentController();
 
-router.post("/board/:id/comment", tokenVerify, commentCreateRule, validateError, commentContext.postComment);
+router.post("/board/:id/comment", tokenVerify, commentCreateRule, validateError, commentContext.postComment); 
 router.put("/board/:boardId/comment/:commentId", tokenVerify, commentUpdateRule, validateError, commentContext.putComment);
 router.delete("/board/:boardId/comment/:commentId", tokenVerify, commentContext.deleteComment);
 
