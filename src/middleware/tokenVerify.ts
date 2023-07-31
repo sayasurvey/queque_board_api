@@ -13,7 +13,7 @@ const jwtSecret = process.env.JWT_SECRET_KEY || "";
 const prisma = new PrismaClient();
 
 // JWTのデコードとユーザー確認を行うミドルウェア
-const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
+const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -49,4 +49,4 @@ const tokenDecode = async (token: string): Promise<JwtPayload> => {
   return decodedToken;
 };
 
-export = authenticateUser;
+export = tokenVerify;
