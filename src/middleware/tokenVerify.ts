@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv";
-import { PrismaClient } from '@prisma/client';
 import {
   errorHandler,
   CustomException
@@ -10,7 +9,7 @@ import {
 dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET_KEY || "";
-const prisma = new PrismaClient();
+import { prismaContext } from "../lib/prismaContext";
 
 // JWTのデコードとユーザー確認を行うミドルウェア
 const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
@@ -25,7 +24,7 @@ const tokenVerify = async (req: Request, res: Response, next: NextFunction) => {
     const decode = await tokenDecode(token);
     const { email } = decode
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prismaContext.user.findUnique({ where: { email } });
 
     if (!user) {
       throw new CustomException(401, 'User not found', "info");
