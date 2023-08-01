@@ -6,5 +6,6 @@ router.use("", require("./routes/auth"));
 router.use("", require("./routes/board"));
 router.use("", require("./routes/user"));
 router.use("", require("./routes/bookmark"));
+router.use("", require("./routes/comment"));
 
 module.exports = router;
