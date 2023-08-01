@@ -76,7 +76,7 @@ export class AuthController {
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       res.clearCookie("jwtToken", {
-        httpOnly: true,
+        httpOnly: true
       });
 
       res.status(200).json({ message: "Logout success" });
