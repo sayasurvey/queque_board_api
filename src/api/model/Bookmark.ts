@@ -7,7 +7,15 @@ export const getBookmark = async (user_id: number): Promise<any> => {
       where: { userId: user_id },
       select: {
         id: true,
-        board: true,
+        board: {
+          include: {
+            user: {
+              select: {
+                name: true
+              }
+            }
+          }
+        },
       },
     })
     .catch(() => {
